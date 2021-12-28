@@ -8,6 +8,8 @@ import { Navbar } from '../ui/Navbar'
 import { CalendarEvent } from './CalendarEvent';
 import { CalendarModal } from './CalendarModal';
 import { uiOpenModal } from '../../actions/ui';
+import { calendarSetActiveEvent } from '../../actions/calendarEvents';
+import { AddNewFab } from '../ui/AddNewFab';
 
 
 const localizer = momentLocalizer(moment);
@@ -36,7 +38,8 @@ export const CalendarScreen = () => {
     }
 
     const onSelectEvent = (e) => {
-        console.log(e);
+        dispatch(calendarSetActiveEvent(e));
+        dispatch(uiOpenModal());
     }
 
     const onViewChange = (e) => {
@@ -77,6 +80,8 @@ export const CalendarScreen = () => {
                     event: CalendarEvent
                 }}
             />
+
+            <AddNewFab/>
 
             <CalendarModal/>
 
