@@ -8,8 +8,9 @@ import { Navbar } from '../ui/Navbar'
 import { CalendarEvent } from './CalendarEvent';
 import { CalendarModal } from './CalendarModal';
 import { uiOpenModal } from '../../actions/ui';
-import { calendarSetActiveEvent } from '../../actions/calendarEvents';
+import { calendarEventClearActiveEvent, calendarSetActiveEvent } from '../../actions/calendarEvents';
 import { AddNewFab } from '../ui/AddNewFab';
+import { DeleteEventFab } from '../ui/DeleteEventFab';
 
 
 const localizer = momentLocalizer(moment);
@@ -17,7 +18,7 @@ const localizer = momentLocalizer(moment);
 export const CalendarScreen = () => {
 
     const dispatch = useDispatch(); 
-    const { events } = useSelector(state => state.calendar)
+    const { events, activeEvent } = useSelector(state => state.calendar)
 
     const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
 
@@ -33,6 +34,10 @@ export const CalendarScreen = () => {
     const onViewChange = (e) => {
         setLastView(e);
         localStorage.setItem('lastView', e);
+    }
+
+    const onSelectSlot = (e) => {
+        dispatch (calendarEventClearActiveEvent());
     }
 
     const eventStyleGetter = ( event, start, end, isSelected ) => {
@@ -54,22 +59,25 @@ export const CalendarScreen = () => {
         <div className='calendar-screen'>
             <Navbar />
             <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: 500 }}
-                eventPropGetter= { eventStyleGetter }
-                onDoubleClickEvent={ onDoubleClick }
-                onSelectEvent={ onSelectEvent }
+                localizer = {localizer}
+                events = {events}
+                startAccessor = "start"
+                endAccessor = "end"
+                style = {{ height: 500 }}
+                eventPropGetter = { eventStyleGetter }
+                onDoubleClickEvent = { onDoubleClick }
+                onSelectEvent = { onSelectEvent }
+                onSelectSlot = { onSelectSlot }
+                selectable = {true}
                 onView = { onViewChange }
                 view = { lastView }
-                components={{
+                components = {{
                     event: CalendarEvent
                 }}
             />
 
             <AddNewFab/>
+            { (activeEvent) && <DeleteEventFab/>}
 
             <CalendarModal/>
 

@@ -4,7 +4,7 @@ import { uiOpenModal } from '../../actions/ui';
 
 export const AddNewFab = () => {
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
     const handleClickNew = () => {
         dispatch(uiOpenModal())

@@ -15,3 +15,5 @@ export const calendarEventUpdate = (event) => ({
     type: types.calendarEventUpdate,
     payload: event
 });
+
+export const calendarEventDelete = () => ({type: types.calendarEventDelete});
